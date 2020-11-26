@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.lizhaorong.queoj.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="xyz.lizhaorong.queoj.entity.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="nickName" jdbcType="VARCHAR" property="nickname" />
+    <result column="password" jdbcType="CHAR" property="password" />
+    <result column="favicon" jdbcType="VARCHAR" property="favicon" />
+    <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="phone" jdbcType="CHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="point" jdbcType="INTEGER" property="point" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="github" jdbcType="VARCHAR" property="github" />
+    <result column="website" jdbcType="VARCHAR" property="website" />
+  </resultMap>
+
+
+  <select id="getUserCount" resultType="int">
+    select count(distinct P.id) as count from record as R inner join problem as P on R.pid=P.id where R.uid=#{uid} and R.state=1 group by P.level order by P.level;
+  </select>
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.lizhaorong.queoj.dao.RecordMapper">
+  <resultMap id="BaseResultMap" type="xyz.lizhaorong.queoj.entity.Record">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="used_time" jdbcType="BIGINT" property="usedTime" />
+    <result column="used_space" jdbcType="BIGINT" property="usedSpace" />
+  </resultMap>
+
+  <select id="getSimpleRecords" resultType="xyz.lizhaorong.queoj.controller.vo.UserCenterRecord">
+    select r.state,r.time,p.id,p.name from record as r inner join problem as p on r.pid=p.id where r.uid=#{id}
+  </select>
+
+</mapper>

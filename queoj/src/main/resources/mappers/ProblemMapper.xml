@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.lizhaorong.queoj.dao.ProblemMapper">
+  <resultMap id="BaseResultMap" type="xyz.lizhaorong.queoj.entity.Problem">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="point" jdbcType="INTEGER" property="point" />
+    <result column="level" jdbcType="TINYINT" property="level" />
+    <result column="default_code" jdbcType="LONGVARCHAR" property="defaultCode" />
+    <result column="pending_code" jdbcType="LONGVARCHAR" property="pendingCode" />
+    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+  </resultMap>
+</mapper>
