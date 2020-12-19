@@ -2,11 +2,9 @@ package xyz.lizhaorong.queoj.controller.vo;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 public class ProblemVO {

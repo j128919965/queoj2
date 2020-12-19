@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import xyz.lizhaorong.queoj.controller.vo.SimpleProblem;
 import xyz.lizhaorong.queoj.dao.ProblemMapper;
+import xyz.lizhaorong.queoj.dao.RecordMapper;
 import xyz.lizhaorong.queoj.entity.Problem;
 
 import javax.annotation.PostConstruct;
@@ -23,6 +24,9 @@ public class ProblemService implements InitializingBean {
 
     @Autowired
     ProblemMapper problemMapper;
+
+    @Autowired
+    RecordMapper recordMapper;
 
     @Autowired
     RedisTemplate<String,String> redisTemplate;
@@ -86,5 +90,12 @@ public class ProblemService implements InitializingBean {
 
     public void addProblem(Problem problem){
         problemMapper.insertSelective(problem);
+    }
+
+    public boolean removeProblem(Integer pid){
+        Integer exsits = recordMapper.exsitsWithPid(pid);
+        if (exsits>0)return false;
+        problemMapper.deleteByPrimaryKey(pid);
+        return true;
     }
 }

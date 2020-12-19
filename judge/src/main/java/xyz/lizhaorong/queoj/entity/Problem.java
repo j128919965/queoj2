@@ -16,6 +16,16 @@ public class Problem {
 
     private String description;
 
+    private String codesig;
+
+    public String getCodesig() {
+        return codesig;
+    }
+
+    public void setCodesig(String codesig) {
+        this.codesig = codesig;
+    }
+
     public Integer getId() {
         return id;
     }

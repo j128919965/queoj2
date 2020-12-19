@@ -69,8 +69,9 @@ public class UserService {
         return userMapper.getRank(id)+1;
     }
 
-    public Map<String,Integer> getCount(Integer uid){
-        List<Integer> userCount = userMapper.getUserCount(uid);
-        return Map.of("easy",userCount.get(0),"medium",userCount.get(1),"hard",userCount.get(2),"solved",userCount.get(0)+userCount.get(1)+userCount.get(2));
+    public Map<String,Long> getCount(Integer uid){
+        Map<String, Long> userCount = userMapper.getUserCount(uid);
+        userCount.put("solved",userCount.get("easy")+userCount.get("medium")+userCount.get("hard"));
+        return userCount;
     }
 }

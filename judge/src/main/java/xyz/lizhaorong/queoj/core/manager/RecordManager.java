@@ -1,5 +1,6 @@
 package xyz.lizhaorong.queoj.core.manager;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundListOperations;
@@ -14,6 +15,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@Slf4j
 public class RecordManager implements InitializingBean {
 
     @Autowired
@@ -21,18 +23,12 @@ public class RecordManager implements InitializingBean {
 
     private BoundListOperations<String,Object> redisList;
 
-    private final BlockingQueue<Record> records = new ArrayBlockingQueue<Record>(16);
+    private final BlockingQueue<Record> records = new ArrayBlockingQueue<>(16);
 
     private static final String API_RECORD = "http://localhost:8888/oj/submit/";
 
-    public Record getRecord(int id) throws IOException {
-        ResponseBasedHttpClient baseHttpClient = new ResponseBasedHttpClient();
-        return baseHttpClient.get(API_RECORD+id, null, Record.class);
-    }
-
     public Record getRecord(){
-        Object o = redisList.leftPop(10, TimeUnit.SECONDS);
-        System.out.println(o);
+        Object o = redisList.leftPop(8, TimeUnit.SECONDS);
         return (Record) o;
     }
 
@@ -47,6 +43,7 @@ public class RecordManager implements InitializingBean {
 
     private void postRecord(Record record) throws IOException {
         ResponseBasedHttpClient baseHttpClient = new ResponseBasedHttpClient();
+        log.debug("send record :"+record.getId());
         baseHttpClient.post(API_RECORD, record, Boolean.class);
     }
 

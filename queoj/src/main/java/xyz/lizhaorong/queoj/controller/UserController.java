@@ -89,7 +89,7 @@ public class UserController {
 
     @GetMapping("/count")
     @Authorization
-    public Response<Map<String,Integer>> getCount(Integer uid){
-        return new Response<Map<String,Integer>>().success(userService.getCount(uid));
+    public Response<Map<String,Long>> getCount(Integer uid){
+        return new Response<Map<String,Long>>().success(userService.getCount(uid));
     }
 }

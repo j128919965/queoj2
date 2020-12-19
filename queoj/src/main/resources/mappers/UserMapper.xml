@@ -20,8 +20,9 @@
   </resultMap>
 
 
-  <select id="getUserCount" resultType="int">
-    select count(distinct P.id) as count from record as R inner join problem as P on R.pid=P.id where R.uid=#{uid} and R.state=1 group by P.level order by P.level;
-  </select>
+  <select id="getUserCount" resultType="map">
+    select (select count(distinct P.id) as count from record as R inner join problem as P on R.pid=P.id where R.uid=#{uid} and R.state=1 and P.level=1) as easy,
+           (select count(distinct P.id) as count from record as R inner join problem as P on R.pid=P.id where R.uid=#{uid} and R.state=1 and P.level=2) as medium,
+           (select count(distinct P.id) as count from record as R inner join problem as P on R.pid=P.id where R.uid=#{uid} and R.state=1 and P.level=3) as hard;  </select>
 
 </mapper>

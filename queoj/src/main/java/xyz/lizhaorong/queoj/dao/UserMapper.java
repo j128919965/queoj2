@@ -19,5 +19,5 @@ public interface UserMapper extends Mapper<User> {
     @Select("select count(*) from user where point > (select point from user where id=#{id})")
     Integer getRank(Integer id);
 
-    List<Integer> getUserCount(Integer uid);
+    Map<String,Long> getUserCount(Integer uid);
 }

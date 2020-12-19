@@ -22,6 +22,8 @@ public class Problem {
 
     private String description;
 
+    private String codesig;
+
     /**
      * @return id
      */
@@ -118,5 +120,13 @@ public class Problem {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCodesig() {
+        return codesig;
+    }
+
+    public void setCodesig(String codesig) {
+        this.codesig = codesig;
     }
 }

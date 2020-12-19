@@ -20,9 +20,16 @@ import java.util.Set;
 @RequestMapping("/problem")
 public class ProblemController {
 
+    private static final String codeModel =
+            "public class Solution{\n" +
+            "   public static $${\n"+
+            "       \n"+
+            "   }\n"+
+            "}";
+
+
     @Autowired
     ProblemService problemService;
-
 
     @GetMapping("/{id}")
     public Response<Problem> getProblemInfo(@PathVariable("id") Integer id){
@@ -43,7 +50,7 @@ public class ProblemController {
         return response.success(res);
     }
 
-    @GetMapping("/like")
+    @GetMapping("/like")    
     public Response<List<SimpleProblem>> getProblemList(String like){
         System.out.println(like);
         Response<List<SimpleProblem>> response = new Response<>();
@@ -60,7 +67,31 @@ public class ProblemController {
     public Response<Boolean> addNewProblem(@Validated ProblemVO problem){
         Problem p = new Problem();
         BeanUtils.copyProperties(problem,p);
+        p.setCodesig(transSig(p.getDefaultCode()));
+        p.setDefaultCode(codeModel.replace("$$",problem.getDefaultCode()));
         problemService.addProblem(p);
         return Response.staticSuccess();
+    }
+
+    @DeleteMapping
+    @Authorization(2)
+    public Response<Boolean> removeProblem(Integer pid){
+        Response<Boolean> response = new Response<>();
+        if (!problemService.removeProblem(pid)){
+            response.failure("题目不能被删除");
+        }else {
+            response.success();
+        }
+        return response;
+    }
+
+    private String transSig(String s){
+        char[] chars = s.toCharArray();
+        int f=0,g=0;
+        for (int i=0;i<chars.length;i++){
+            if (chars[i]==' ')f=i+1;
+            if (chars[i]=='(')g=i;
+        }
+        return s.substring(f,g);
     }
 }

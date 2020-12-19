@@ -16,6 +16,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +31,10 @@ public class BaseHttpClient implements HttpClient {
 
     protected static final ObjectMapper jsonMapper = new ObjectMapper();
     protected Map<String, String> headers = new HashMap<>();
+
+    public BaseHttpClient(){
+        jsonMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+    }
 
     @Override
     public HttpClient setHeader(String k, String v) {
@@ -49,11 +56,11 @@ public class BaseHttpClient implements HttpClient {
 
     @Override
     public <T> T post(String url, Object data, Class<T> retClass) throws IOException {
-        Map<String, String> map = transferMap(data);
+        Map<String, Object> map = transferMap(data);
         CloseableHttpClient httpClient = HttpClients.createDefault();
         List<NameValuePair> content = new ArrayList<>();
         map.forEach((k,v)->{
-            content.add(new BasicNameValuePair(k,v ));
+            content.add(new BasicNameValuePair(k,String.valueOf(v)));
         });
         HttpPost httpPost = new HttpPost(url);
         //设置http头
@@ -130,7 +137,7 @@ public class BaseHttpClient implements HttpClient {
         return jsonMapper.writeValueAsString(data);
     }
 
-    private Map<String, String> transferMap(Object data) throws JsonProcessingException {
+    private Map<String, Object> transferMap(Object data) throws JsonProcessingException {
         if (data==null)return new HashMap<>();
         String s = jsonMapper.writeValueAsString(data);
         return jsonMapper.readValue(s, Map.class);
