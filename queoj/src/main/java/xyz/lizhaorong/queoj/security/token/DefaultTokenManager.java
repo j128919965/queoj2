@@ -13,9 +13,7 @@ import xyz.lizhaorong.queoj.security.token.entity.TokenObject;
 import xyz.lizhaorong.queoj.support.ErrorCode;
 import xyz.lizhaorong.queoj.security.token.entity.TokenErrorCode;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component("tokenManager")
 @Slf4j
@@ -51,12 +49,12 @@ public class DefaultTokenManager implements TokenManager {
                 algorithm = Algorithm.HMAC256(REFRESH_TOKEN_SECRET);
             }
             JWTVerifier verifier = JWT.require(algorithm).build();
-            DecodedJWT decodedJWT = verifier.verify(token);
+            DecodedJWT decodedjwt = verifier.verify(token);
             return new SimpleUser(
-                    decodedJWT.getClaim("uid").asString()
-                    , decodedJWT.getClaim("addr").asString()
-                    ,decodedJWT.getClaim("role").asInt()
-                    ,decodedJWT.getClaim("count").asInt()
+                    decodedjwt.getClaim("uid").asString()
+                    , decodedjwt.getClaim("addr").asString()
+                    ,decodedjwt.getClaim("role").asInt()
+                    ,decodedjwt.getClaim("count").asInt()
             );
         }catch (TokenExpiredException e){
             return new SimpleUser(null,null,0,-1);
@@ -133,28 +131,39 @@ public class DefaultTokenManager implements TokenManager {
     private Object checkAuthorizationImpl(String authorization, int role, String addr, boolean isAccess){
 
         //token是否为空
-        if(authorization==null) return TokenErrorCode.DID_NOT_LOGIN;
+        if(authorization==null) {
+            return TokenErrorCode.DID_NOT_LOGIN;
+        }
 
         //获取token解析结果
         SimpleUser user;
         user = analysisToken(authorization,isAccess);
 
-        if(user==null) return TokenErrorCode.WRONG_TOKEN;
+        if(user==null) {
+            return TokenErrorCode.WRONG_TOKEN;
+        }
 
         //令牌需要刷新
-        if(user.getCount()==-1) return TokenErrorCode.NEED_REFRESH;
+        if(user.getCount()==-1) {
+            return TokenErrorCode.NEED_REFRESH;
+        }
 
         //需要重新登录
-        if(user.getCount()== DefaultTokenManager.MAX_COUNT) return TokenErrorCode.NEED_LOGIN;
+        if(user.getCount()== DefaultTokenManager.MAX_COUNT) {
+            return TokenErrorCode.NEED_LOGIN;
+        }
 
         if(isAccess){
             //检查地址是否一致
-            if(!addr.equals(user.getAddr())) return TokenErrorCode.WRONG_ADDR;
+            if(!addr.equals(user.getAddr())) {
+                return TokenErrorCode.WRONG_ADDR;
+            }
 
             //检查接口权限
-            if (user.getRole()<role)return TokenErrorCode.INSUFFICIENT_AUTHORITY;
+            if (user.getRole()<role) {
+                return TokenErrorCode.INSUFFICIENT_AUTHORITY;
+            }
         }
         return user;
-
     }
 }

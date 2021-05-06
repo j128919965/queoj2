@@ -50,7 +50,7 @@ public class ProblemController {
         return response.success(res);
     }
 
-    @GetMapping("/like")    
+    @GetMapping("/like")
     public Response<List<SimpleProblem>> getProblemList(String like){
         System.out.println(like);
         Response<List<SimpleProblem>> response = new Response<>();
@@ -89,8 +89,12 @@ public class ProblemController {
         char[] chars = s.toCharArray();
         int f=0,g=0;
         for (int i=0;i<chars.length;i++){
-            if (chars[i]==' ')f=i+1;
-            if (chars[i]=='(')g=i;
+            if (chars[i]==' ') {
+                f=i+1;
+            }
+            if (chars[i]=='(') {
+                g=i;
+            }
         }
         return s.substring(f,g);
     }

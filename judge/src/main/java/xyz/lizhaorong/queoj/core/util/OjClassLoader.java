@@ -27,7 +27,6 @@ public class OjClassLoader extends ClassLoader{
 
         try {
             FileInputStream is = new FileInputStream(file);
-
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             int len = 0;
             try {
@@ -37,17 +36,14 @@ public class OjClassLoader extends ClassLoader{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             byte[] data = bos.toByteArray();
             is.close();
             bos.close();
-
             return defineClass(name, data, 0, data.length);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return super.findClass(name);
     }
 

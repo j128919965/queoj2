@@ -46,7 +46,9 @@ public class MainController implements CommandLineRunner {
         System.setSecurityManager(new OJSecurityManager());
         while (true){
             Record record = recordManager.getRecord();
-            if (record==null)continue;
+            if (record==null) {
+                continue;
+            }
             lock.acquire();
             new MainRunner(record,compiler,runner,recordManager).start();
         }

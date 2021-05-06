@@ -20,7 +20,6 @@ public class Record {
         4 re
         5 ce
         6 tle
-
      */
     private Byte state;
 

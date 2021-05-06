@@ -23,6 +23,7 @@ import java.util.Map;
 
 /**
  * 基础的发送http请求实现，基于apache httpClient的实现
+ * @author lzr
  */
 public class BaseHttpClient implements HttpClient {
 
@@ -102,7 +103,9 @@ public class BaseHttpClient implements HttpClient {
      * @throws IOException
      */
     private String transferQueryString(String url, Object data) throws IOException {
-        if (data==null)return url;
+        if (data==null){
+            return url;
+        }
         Map<String, String> map;
         StringBuilder sb = new StringBuilder(url);
         sb.append('?');
@@ -126,12 +129,16 @@ public class BaseHttpClient implements HttpClient {
      * @throws JsonProcessingException
      */
     private String transferJsonString(Object data) throws JsonProcessingException {
-        if (data==null)return "";
+        if (data==null){
+            return "";
+        }
         return jsonMapper.writeValueAsString(data);
     }
 
     private Map<String, Object> transferMap(Object data) throws JsonProcessingException {
-        if (data==null)return new HashMap<>();
+        if (data==null){
+            return new HashMap<>(0);
+        }
         String s = jsonMapper.writeValueAsString(data);
         return jsonMapper.readValue(s, Map.class);
     }
